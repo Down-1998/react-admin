@@ -1,2 +1,2 @@
 # react-admin
-reacthooks+typescript+redux完成的中台系统demo
+reacthooks+typescript+redux+json-server完成的中台系统demo
