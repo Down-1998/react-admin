@@ -5,6 +5,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Button,theme, Dropdown, MenuProps, Avatar } from 'antd';
 import { useState } from 'react';
+import { useNavigate, useLocation } from "react-router";
 const { Header } = Layout;
 import style from './index.module.scss'
 
@@ -12,19 +13,29 @@ export default function TopHeader() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const navigate = useNavigate();
   const [collapsed,setCollapsed] = useState(false)
+  const {username} = JSON.parse(localStorage.getItem("token"))
+  const {roleName} = JSON.parse(localStorage.getItem("tokenRole"))
   const items: MenuProps['items'] = [
     {
       key: '1',
       label: (
-        <div>超级管理员</div>
+        <div>{roleName}</div>
       ),
     },
     {
       key: '2',
       danger: true,
       label: (
-        <div>推出登录</div>
+        <div onClick={()=>{
+          localStorage.removeItem("token")
+          localStorage.removeItem("tokenRole")
+          localStorage.removeItem("otherInfo")
+          // console.log(props.history)
+          // props.history.replace("/login")
+          navigate('/login')
+      }}>推出登录</div>
       ),
     },
   ];
@@ -41,7 +52,7 @@ export default function TopHeader() {
       }}
     />
     <div className={style['user']}>
-      <span>欢迎admin回来</span>
+      <span>欢迎{username}回来</span>
       <Dropdown menu={{ items }}>
       <Avatar size="large" icon={<UserOutlined />} />
     </Dropdown>

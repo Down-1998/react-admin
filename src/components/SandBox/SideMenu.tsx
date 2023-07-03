@@ -6,7 +6,9 @@ import { Layout, Menu, MenuProps } from 'antd';
 const { Sider } = Layout;
 import style from './index.module.scss'
 import { useNavigate, useLocation } from "react-router";
-import axios from '@/http/request'
+// import axios from '@/http/request'
+import axios from 'axios'
+import SubMenu from 'antd/es/menu/SubMenu';
 type MenuItem = Required<MenuProps>['items'][number];
 
 const iconList = {
@@ -19,7 +21,7 @@ const iconList = {
   //.......
 }
 
-export default function SideMenu(props) {
+export default function SideMenu() {
 
   const location = useLocation();
   // console.log(location, 'location');
@@ -29,45 +31,56 @@ export default function SideMenu(props) {
   const [collapsed, setCollapsed] = useState(false);
   const [current, setCurrent] = useState('1');
   const [menus, setMenus] = useState([
-    // {
-    //   key: '/user-manage',
-    //   label: '用户管理',
-    //   icon: <UserOutlined />,
-    //   children: [
-    //     {
-    //       key: '/user-manage/list',
-    //       label: '用户列表',
-    //       icon: <UserOutlined />,
-    //     }
-    //   ]
-    // },
+    
   ])
   useEffect(() => {
-    axios.get('/rights?_embed=children').then((res: any) => {
-      const data = res;
-      data.forEach((item, index) => {
-        delete item.rightId;
-        item.label = item.title;
-        item.icon = iconList[item.key]
-        if (item.children.length > 0) {
-          let filterChildren = []
-          filterChildren = item.children.filter((it) => {
-            delete it.rightId;
-            it.label = it.title;
-            return it.pagepermisson === 1
-          })
-          item.children = filterChildren
-        } else {
-          delete item.children
-        }
-      });
+    axios.get('http://localhost:53000/rights?_embed=children').then((res: any) => {
+      console.log(res,'res');
+      const data = res.data;
+      // data.forEach((item, index) => {
+      //   delete item.rightId;
+      //   item.label = item.title;
+      //   item.icon = iconList[item.key]
+      //   if (item.children?.length > 0) {
+      //     let filterChildren = []
+      //     filterChildren = item.children.filter((it) => {
+      //       delete it.rightId;
+      //       it.label = it.title;
+      //       return it.pagepermisson === 1
+      //     })
+      //     item.children = filterChildren
+      //   } else {
+      //     delete item.children
+      //   }
+      // });
       // console.log(data, 'menusData');
-      setMenus(data.filter(item => item.pagepermisson === 1))
+      // setMenus(data.filter(item => item.pagepermisson === 1))
+
+      setMenus(res.data)
     })
   }, [])
   useEffect(() => {
     setCurrent(location.pathname);
   }, [location])
+
+  const {rights} = JSON.parse(localStorage.getItem("tokenRole"))
+  const checkPagePermission = (item)=>{
+    return item.pagepermisson && rights.includes(item.key)
+  }
+  const renderMenu = (menuList)=>{
+    return menuList.map(item=>{
+      if(item.children?.length>0 && checkPagePermission(item)){
+        return <SubMenu key={item.key} icon={iconList[item.key]} title={item.title}>
+           { renderMenu(item.children) }
+        </SubMenu>
+      }
+
+      return checkPagePermission(item) && <Menu.Item key={item.key} icon={iconList[item.key]}  onClick={()=>{
+        //  console.log(props)
+        navigate(item.key)
+      }}>{item.title}</Menu.Item>
+    })
+  }
 
   const onClick: MenuProps['onClick'] = useCallback((e) => {
     console.log('click ', e);
@@ -89,8 +102,9 @@ export default function SideMenu(props) {
             defaultOpenKeys={openKeys}
             selectedKeys={[current]}
             onClick={onClick}
-            items={menus}
-          />
+          >
+            {renderMenu(menus)}
+          </Menu>
         </div>
       </div>
     </Sider>

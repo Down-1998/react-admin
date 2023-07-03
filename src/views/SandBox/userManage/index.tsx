@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Table, Modal, Switch } from 'antd'
-import axios from '@/http/request'
+import axios from 'axios'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import UserForm from '@/components/user-manage/UserForm'
 const { confirm } = Modal
@@ -17,7 +17,7 @@ export default function UserList() {
     const addForm = useRef(null)
     const updateForm = useRef(null)
     
-    const {roleId,region,username}  = JSON.parse(localStorage.getItem("token"))
+    // const {roleId,region,username}  = JSON.parse(localStorage.getItem("token"))
 
     useEffect(() => {
         const roleObj = {
@@ -25,26 +25,26 @@ export default function UserList() {
             "2":"admin",
             "3":"editor"
         }
-        axios.get("/users?_expand=role").then(res => {
-            const list = res as any
+        axios.get("http://localhost:53000/users?_expand=role").then(res => {
+            const list = res.data
             // setdataSource(roleObj[roleId]==="superadmin"?list:[
             //     ...list.filter(item=>item.username===username),
             //     ...list.filter(item=>item.region===region&& roleObj[item.roleId]==="editor")
             // ])
             setdataSource(list)
         })
-    }, [roleId,region,username])
+    }, [])
 
     useEffect(() => {
-        axios.get("/regions").then(res => {
-            const list = res
+        axios.get("http://localhost:53000/regions").then(res => {
+            const list = res.data
             setregionList(list)
         })
     }, [])
 
     useEffect(() => {
-        axios.get("/roles").then(res => {
-            const list = res
+        axios.get("http://localhost:53000/roles").then(res => {
+            const list = res.data
             setroleList(list)
         })
     }, [])
@@ -107,8 +107,10 @@ export default function UserList() {
     ];
 
     const handleUpdate = (item)=>{
+        setisUpdateVisible(true)
+        
         setTimeout(()=>{
-            setisUpdateVisible(true)
+            // setisUpdateVisible(true)
             if(item.roleId===1){
                 //禁用
                 setisUpdateDisabled(true)
@@ -127,7 +129,7 @@ export default function UserList() {
         item.roleState = !item.roleState
         setdataSource([...dataSource])
 
-        axios.patch(`/users/${item.id}`,{
+        axios.patch(`http://localhost:53000/users/${item.id}`,{
             roleState:item.roleState
         })
     }
@@ -154,7 +156,7 @@ export default function UserList() {
 
         setdataSource(dataSource.filter(data=>data.id!==item.id))
 
-        axios.delete(`/users/${item.id}`)
+        axios.delete(`http://localhost:53000/users/${item.id}`)
     }
 
     const addFormOK = () => {
@@ -165,7 +167,7 @@ export default function UserList() {
 
             addForm.current.resetFields()
             //post到后端，生成id，再设置 datasource, 方便后面的删除和更新
-            axios.post(`/users`, {
+            axios.post(`http://localhost:53000/users`, {
                 ...value,
                 "roleState": true,
                 "default": false,
@@ -183,7 +185,7 @@ export default function UserList() {
 
     const updateFormOK = ()=>{
         updateForm.current.validateFields().then(value => {
-            // console.log(value)
+            console.log(value)
             setisUpdateVisible(false)
 
             setdataSource(dataSource.map(item=>{
@@ -198,7 +200,7 @@ export default function UserList() {
             }))
             setisUpdateDisabled(!isUpdateDisabled)
 
-            axios.patch(`/users/${current.id}`,value)
+            axios.patch(`http://localhost:53000/users/${current.id}`, value  )
         })
     }
 

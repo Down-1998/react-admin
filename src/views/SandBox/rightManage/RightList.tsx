@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Button, Table, Tag, Modal, Popover, Switch } from 'antd'
-import axios from '@/http/request'
+import axios from 'axios'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 const { confirm } = Modal
 export default function RightList() {
   const [dataSource, setdataSource] = useState([])
 
   useEffect(() => {
-    axios.get("/rights?_embed=children").then((res: any) => {
-      const list = res
+    axios.get("http://localhost:53000/rights?_embed=children").then((res: any) => {
+      const list = res.data
 
       list.forEach(item => {
         if (item.children.length === 0) {
