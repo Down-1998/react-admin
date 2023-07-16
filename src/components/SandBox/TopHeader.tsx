@@ -52,7 +52,7 @@ export default function TopHeader() {
       }}
     />
     <div className={style['user']}>
-      <span>欢迎{username}回来</span>
+      <div className={style['user-content']}>欢迎<span className={style['username']}>{username}</span>回来</div>
       <Dropdown menu={{ items }}>
       <Avatar size="large" icon={<UserOutlined />} />
     </Dropdown>

@@ -8,12 +8,13 @@ const UserForm = forwardRef((props,ref) => {
         setisDisabled(props.isUpdateDisabled)
     },[props.isUpdateDisabled])
 
-    const {roleId,region}  = JSON.parse(localStorage.getItem("token"))
+    const {roleId,region}  = JSON.parse(localStorage.getItem("otherInfo"))
     const roleObj = {
         "1":"superadmin",
         "2":"admin",
         "3":"editor"
     }
+    //区域选择的禁用
     const checkRegionDisabled = (item)=>{
         if(props.isUpdate){
             if(roleObj[roleId]==="superadmin"){
@@ -25,7 +26,7 @@ const UserForm = forwardRef((props,ref) => {
             if(roleObj[roleId]==="superadmin"){
                 return false
             }else{
-                return item.value!==region
+                return item.value!==region//不是超级管理员的只能选择自己的区域
             }
         }
     }
@@ -73,8 +74,8 @@ const UserForm = forwardRef((props,ref) => {
                 <Select disabled={isDisabled}>
                     {
                         props.regionList.map(item =>
-                            // <Option value={item.value} key={item.id} disabled={checkRegionDisabled(item)}>{item.title}</Option>
-                            <Option value={item.value} key={item.id}>{item.title}</Option>
+                            <Option value={item.value} key={item.id} disabled={checkRegionDisabled(item)}>{item.title}</Option>
+                            // <Option value={item.value} key={item.id}>{item.title}</Option>
                         )
                     }
                 </Select>
@@ -97,8 +98,8 @@ const UserForm = forwardRef((props,ref) => {
                 }}>
                     {
                         props.roleList.map(item =>
-                            // <Option value={item.id} key={item.id} disabled={checkRoleDisabled(item)}>{item.roleName}</Option>
-                            <Option value={item.id} key={item.id}>{item.roleName}</Option>
+                            <Option value={item.id} key={item.id} disabled={checkRoleDisabled(item)}>{item.roleName}</Option>
+                            // <Option value={item.id} key={item.id}>{item.roleName}</Option>
                         )
                     }
                 </Select>

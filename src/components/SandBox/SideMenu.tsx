@@ -17,7 +17,7 @@ const iconList = {
   "/user-manage/list": <CrownOutlined />,
   "/right-manage": <UserOutlined />,
   "/right-manage/role/list": <UserOutlined />,
-  "/right-manage/right/list": <UserOutlined />
+  "/right-manage/right/list": <UserOutlined /> 
   //.......
 }
 
@@ -36,26 +36,6 @@ export default function SideMenu() {
   useEffect(() => {
     axios.get('http://localhost:53000/rights?_embed=children').then((res: any) => {
       console.log(res,'res');
-      const data = res.data;
-      // data.forEach((item, index) => {
-      //   delete item.rightId;
-      //   item.label = item.title;
-      //   item.icon = iconList[item.key]
-      //   if (item.children?.length > 0) {
-      //     let filterChildren = []
-      //     filterChildren = item.children.filter((it) => {
-      //       delete it.rightId;
-      //       it.label = it.title;
-      //       return it.pagepermisson === 1
-      //     })
-      //     item.children = filterChildren
-      //   } else {
-      //     delete item.children
-      //   }
-      // });
-      // console.log(data, 'menusData');
-      // setMenus(data.filter(item => item.pagepermisson === 1))
-
       setMenus(res.data)
     })
   }, [])
@@ -78,7 +58,7 @@ export default function SideMenu() {
       return checkPagePermission(item) && <Menu.Item key={item.key} icon={iconList[item.key]}  onClick={()=>{
         //  console.log(props)
         navigate(item.key)
-      }}>{item.title}</Menu.Item>
+      }}>{item.title }</Menu.Item>
     })
   }
 

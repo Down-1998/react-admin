@@ -60,11 +60,11 @@ export default function RightList() {
     // console.log(item)
     setdataSource([...dataSource])
     if (item.grade === 1) {
-      axios.patch(`/rights/${item.id}`, {
+      axios.patch(`http://localhost:53000/rights/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     } else {
-      axios.patch(`/children/${item.id}`, {
+      axios.patch(`http://localhost:53000/children/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     }
@@ -91,12 +91,12 @@ export default function RightList() {
     // 当前页面同步状态 + 后端同步
     if (item.grade === 1) {
       setdataSource(dataSource.filter(data => data.id !== item.id))
-      axios.delete(`/rights/${item.id}`)
+      axios.delete(`http://localhost:53000/rights/${item.id}`)
     } else {
       const list = dataSource.filter(data => data.id === item.rightId)
       list[0].children = list[0].children.filter(data => data.id !== item.id)
       setdataSource([...dataSource])
-      axios.delete(`/children/${item.id}`)
+      axios.delete(`http://localhost:53000/children/${item.id}`)
     }
   }, [dataSource])
 
