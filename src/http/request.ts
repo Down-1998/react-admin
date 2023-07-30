@@ -11,7 +11,7 @@ interface Result {
 interface ResultData<T = any> extends Result {
     data?: T;
 }
-const URL = "http://localhost:53000"
+const URL = "http://localhost:53000" 
 enum RequestEnums {
     TIMEOUT = 20000,
     OVERDUE = 600, // 登录失效
@@ -60,19 +60,16 @@ class RequestHttp {
         this.service.interceptors.response.use(
             (response: AxiosResponse) => {
                 const { data, config } = response; // 解构
-                if (data.code === RequestEnums.OVERDUE) {
-                    // 登录信息失效，应跳转到登录页面，并清空本地的token
-                    localStorage.setItem('token', '');
-                    // router.replace({
-                    //   path: '/login'
-                    // })
-                    return Promise.reject(data);
-                }
+                // if (data.code === RequestEnums.OVERDUE) {
+                //     // 登录信息失效，应跳转到登录页面，并清空本地的token
+                //     localStorage.setItem('token', '');
+                //     return Promise.reject(data);
+                // }
                 // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）
-                if (data.code && data.code !== RequestEnums.SUCCESS) {
-                  message.error(data); // 此处也可以使用组件提示报错信息
-                    return Promise.reject(data)
-                }
+                // if (data.code && data.code !== RequestEnums.SUCCESS) {
+                //   message.error(data); // 此处也可以使用组件提示报错信息
+                //     return Promise.reject(data)
+                // }
                 return data;
             },
             (error: AxiosError) => {

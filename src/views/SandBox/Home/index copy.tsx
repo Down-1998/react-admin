@@ -3,50 +3,29 @@ import { Button, Input, Form } from 'antd';
 import axios from '@/http/request'
 import { useMemo } from 'react';
 import style from './index.module.css'
-
+type Data = Array<DataItem>;
+interface DataItem {
+  age: string
+  id?: number
+}
 export default function Home() {
   const [data, setData] = useState([
-    {
-      age:1,
-      id: Math.random()*100 +  new Date().getTime()
-    },
-    {
-      age:2,
-      id: Math.random()*100 +  new Date().getTime()
-    },
-    {
-      age:3,
-      id: Math.random()*100 +  new Date().getTime()
-    },
-    {
-      age:4,
-      id: Math.random()*100 +  new Date().getTime()
-    },
-    {
-      age:5,
-      id: Math.random()*100 +  new Date().getTime()
-    }
+  
   ]);
   useEffect(() => {
-    // const fetchData = async() =>{
-    //   const res = await axios.get('http://localhost:53000/test')
-    //   res.forEach((item)=> {
-    //       item.id = Math.random()*100 +  new Date().getTime()
-    //   });
-    //   setData(res);
-    //   console.log(res);
-    // }
-    // fetchData();
-
-    // setData(data.map(item => {
-    //   item.id = Math.random()*100 +  new Date().getTime()
-    //   return item
-    // }));
+    const fetchData = async() =>{
+      const res = await axios.get('http://localhost:53000/test')
+      res.forEach((item)=> {
+          item.id = Math.random()*100 +  new Date().getTime()
+      });
+      setData(res);
+      console.log(res);
+    }
+    fetchData();
   }, [])
 
-  const deleteItem = (dataItem, index: number) => {
+  const deleteItem = (dataItem: DataItem, index: number) => {
     const arr = data.filter((item) => item.id !== dataItem.id);
-    
     setData(arr);
   }
   const addItem = useCallback(() => {

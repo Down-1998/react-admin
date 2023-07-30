@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import {
   UserOutlined, HomeOutlined, CrownOutlined
 } from '@ant-design/icons';
@@ -44,9 +44,9 @@ export default function SideMenu() {
   }, [location])
 
   const {rights} = JSON.parse(localStorage.getItem("tokenRole"))
-  const checkPagePermission = (item)=>{
+  const checkPagePermission = useCallback((item)=>{
     return item.pagepermisson && rights.includes(item.key)
-  }
+  },[rights])
   const renderMenu = (menuList)=>{
     return menuList.map(item=>{
       if(item.children?.length>0 && checkPagePermission(item)){
@@ -61,6 +61,18 @@ export default function SideMenu() {
       }}>{item.title }</Menu.Item>
     })
   }
+  const renderTest = useMemo(() => {
+    const renderMenus = [];
+    menus.map(item =>{
+      if(item.children?.length>0 && checkPagePermission(item)){
+        renderMenus.push({
+          label: item.title,
+          key:item.key,
+          icon: iconList[item.key],
+        })
+      }
+    })
+  }, [menus,checkPagePermission])
 
   const onClick: MenuProps['onClick'] = useCallback((e) => {
     console.log('click ', e);

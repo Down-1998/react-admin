@@ -10,10 +10,11 @@ import NewsAdd from '@/views/SandBox/newsManage/newsAdd'
 import NewsCategory from '@/views/SandBox/newsManage/newsCategory'
 import NewsDraft from '@/views/SandBox/newsManage/newsDraft'
 import Audit from '@/views/SandBox/auditManage/Audit'
-import AuditList from '@/views/SandBox/auditManage/list'
+import AuditList from '@/views/SandBox/auditManage/List'
 import Unpublished from '@/views/SandBox/publishManage/Unpublished'
 import Published from '@/views/SandBox/publishManage/Published'
 import Sunset from '@/views/SandBox/publishManage/Sunset'
+import NewsPreview from '@/views/SandBox/newsManage/newsPreview'
 
 const LocalRouterMap = {
     "/home": Home,
@@ -23,7 +24,7 @@ const LocalRouterMap = {
     "/news-manage/add": NewsAdd,//新增
     "/news-manage/draft": NewsDraft,//草稿
     "/news-manage/category": NewsCategory,//分类
-    // "/news-manage/preview/:id": NewsPreview,
+    "/news-manage/preview/:id": NewsPreview,
     // "/news-manage/update/:id": NewsUpdate,
     "/audit-manage/audit": Audit,//审核新闻
     "/audit-manage/list": AuditList,//审核列表
