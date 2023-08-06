@@ -15,6 +15,7 @@ import Unpublished from '@/views/SandBox/publishManage/Unpublished'
 import Published from '@/views/SandBox/publishManage/Published'
 import Sunset from '@/views/SandBox/publishManage/Sunset'
 import NewsPreview from '@/views/SandBox/newsManage/newsPreview'
+import NewsUpdate from '@/views/SandBox/newsManage/newsUpdate'
 
 const LocalRouterMap = {
     "/home": Home,
@@ -25,7 +26,7 @@ const LocalRouterMap = {
     "/news-manage/draft": NewsDraft,//草稿
     "/news-manage/category": NewsCategory,//分类
     "/news-manage/preview/:id": NewsPreview,
-    // "/news-manage/update/:id": NewsUpdate,
+    "/news-manage/update/:id": NewsUpdate,
     "/audit-manage/audit": Audit,//审核新闻
     "/audit-manage/list": AuditList,//审核列表
     "/publish-manage/unpublished": Unpublished,//待发布
