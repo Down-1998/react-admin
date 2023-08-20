@@ -17,7 +17,7 @@ export default function AuditList(props) {
             title: '新闻标题',
             dataIndex: 'title',
             render: (title,item) => {
-                return <a href={`#/news-manage/preview/${item.id}`}>{title}</a>
+                return <a href={`/news-manage/preview/${item.id}`}>{title}</a>
             }
         },
         {
@@ -37,7 +37,7 @@ export default function AuditList(props) {
             render: (auditState) => {
                 const colorList = ["",'orange','green','red']
                 const auditList = ["草稿箱","审核中","已通过","未通过"]
-                return <Tag color={colorList[auditState]}>{auditList[auditState]}</Tag>
+                return <Tag color={colorList[ auditState]}>{auditList[auditState]}</Tag>
             }
         },
         {
