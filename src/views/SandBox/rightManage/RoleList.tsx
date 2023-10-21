@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Button, Modal,Tree } from 'antd'
-import axios from '@/http/request'
+import service from '@/http/request'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 const { confirm } = Modal
 export default function RoleList() {
@@ -54,20 +54,20 @@ export default function RoleList() {
     const deleteMethod = (item) => {
         // console.log(item)
         setdataSource(dataSource.filter(data => data.id !== item.id))
-        axios.delete(`/roles/${item.id}`)
+        service.delete(`/roles/${item.id}`)
     }
 
     useEffect(() => {
-        axios.get("/roles").then(res => {
+        service.get("/roles").then(res => {
             // console.log(res.data)
-            setdataSource(res)
+            setdataSource(res.data)
         })
     }, [])
 
     useEffect(() => {
-        axios.get("/rights?_embed=children").then(res => {
+        service.get("/rights?_embed=children").then(res => {
             // console.log(res.data)
-            setRightList(res)
+            setRightList(res.data)
         })
     }, [])
 
@@ -88,7 +88,7 @@ export default function RoleList() {
         }))
         //patch
 
-        axios.patch(`/roles/${currentId}`,{
+        service.patch(`/roles/${currentId}`,{
             rights:currentRights
         })
     }

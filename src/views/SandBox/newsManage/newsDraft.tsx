@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Table, Modal,notification} from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
 import { useNavigate, useLocation } from "react-router";
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined,UploadOutlined } from '@ant-design/icons'
 const { confirm } = Modal
@@ -10,7 +10,7 @@ export default function NewsDraft(props) {
 
     const {username}  = JSON.parse(localStorage.getItem("token"))
     useEffect(() => {
-        axios.get(`http://localhost:53000/news?author=${username}&auditState=0&_expand=category`).then(res => {
+        service.get(`/news?author=${username}&auditState=0&_expand=category`).then(res => {
             const list = res.data
             setdataSource(list)
         })
@@ -60,7 +60,7 @@ export default function NewsDraft(props) {
 
 
     const handleCheck = (id)=>{
-        axios.patch(`http://localhost:53000/news/${id}`,{
+        service.patch(`/news/${id}`,{
             auditState:1
         }).then(res=>{
           navigate('/audit-manage/list')
@@ -94,7 +94,7 @@ export default function NewsDraft(props) {
         // 当前页面同步状态 + 后端同步
       
         setdataSource(dataSource.filter(data => data.id !== item.id))
-        axios.delete(`http://localhost:53000/news/${item.id}`)
+        service.delete(`/news/${item.id}`)
     }
 
     return (

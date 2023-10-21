@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react'
 import { Steps, Button, Form, Input, Select, message, notification } from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
 import style from './News.module.css'
 import NewsEditor from '@/components/newsManage/NewsEditor';
 import { useNavigate, useLocation } from "react-router";
@@ -45,7 +45,7 @@ export default function NewsAdd(props) {
     const NewsForm = useRef(null)
 
     useEffect(() => {
-        axios.get("http://localhost:53000/categories").then(res => {
+        service.get("/categories").then(res => {
             // console.log(res.data)
             setCategoryList(res.data)
         })
@@ -53,7 +53,7 @@ export default function NewsAdd(props) {
 
 
     const handleSave = useCallback((auditState) => {
-        axios.post('http://localhost:53000/news', {
+        service.post('/news', {
             ...formInfo,
             "content": content,
             "region": otherInfo.region ? otherInfo.region : "全球",

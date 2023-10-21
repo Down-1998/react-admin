@@ -1,6 +1,8 @@
-import React,{ useEffect,useState, useCallback, useMemo } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { Navigate, Route, Routes, useRoutes } from 'react-router-dom'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import service from '@/http/request'
+import {Spin } from 'antd'
 import Home from '@/views/SandBox/Home'
 import UserList from '@/views/SandBox/userManage'
 import RightList from '@/views/SandBox/rightManage/RightList'
@@ -34,52 +36,63 @@ const LocalRouterMap = {
     "/publish-manage/sunset": Sunset//已下线
 }
 
-export default function NewsRouter() {
+const NewsRouter = (props) => {
     const [BackRouteList, setBackRouteList] = useState([])
     useEffect(() => {
         Promise.all([
-            axios.get("http://localhost:53000/rights"),
-            axios.get("http://localhost:53000/children"),
-        ]).then(res => {
-            // console.log(res)
-            setBackRouteList([...res[0].data, ...res[1].data])
-            // console.log(BackRouteList)
+            service.get("/rights"),
+            service.get("/children"),
+        ]).then(res  => {
+            setBackRouteList([...(res[0] as any).data, ...(res[1] as any).data])
         })
-    
-      
+
+
     }, [])
     const { rights } = JSON.parse(localStorage.getItem("tokenRole"))
     const checkRoute = useCallback((item) => {
         return LocalRouterMap[item.key] && (item.pagepermisson || item.routepermisson)
-    },[])
-    
+    }, [])
+
     const checkUserPermission = useCallback((item) => {
         return rights.includes(item.key)
-    },[rights])
+    }, [rights])
 
-    const renderRoutes = useMemo(() =>{
-       return BackRouteList.map((item) => {
-        if(checkRoute(item) && checkUserPermission(item)){
-            return <Route path={item.key} key={item.key} Component={LocalRouterMap[item.key]} />
-        }else{
-            return null
-        }
+    const renderRoutes = useMemo(() => {
+        return BackRouteList.map((item) => {
+            if (checkRoute(item) && checkUserPermission(item)) {
+                return <Route path={item.key} key={item.key} Component={LocalRouterMap[item.key]} />
+            } else {
+                return null
+            }
+
+        })
+    }, [BackRouteList, checkRoute, checkUserPermission])
+
+    return (
+        <Spin ize="large" spinning={props.loadingCount > 0}>
+            <Routes>
+                {renderRoutes}
+                <Route path="/" element={<Navigate replace to="home" />} />
+                {/* <Route path="*" element={<NoPermission />} /> */}
+                {
+                    BackRouteList.length > 0 && <Route path="*" element={<NoPermission />} />
+                }
+                {/* <Route path="home" element={<Home />} />
+                <Route path="user-manage/list" element={<UserList />} />
+                <Route path="right-manage/role/list" element={<RoleList />} />
+                <Route path="right-manage/right/list" element={<RightList />} />
+                <Route path="/" element={<Navigate replace to="home" />} />
+                <Route path="/*" element={<NoPermission />} /> */}
+            </Routes>
+        </Spin>
         
-       })
-    }, [BackRouteList,checkRoute,checkUserPermission])
-    
-  return (
-        <Routes>
-            
-            {renderRoutes}
-            <Route path="/" element={<Navigate replace to="home" />} />
-            <Route path="/*" element={<NoPermission />} />
-            {/* <Route path="home" element={<Home />} />
-            <Route path="user-manage/list" element={<UserList />} />
-            <Route path="right-manage/role/list" element={<RoleList />} />
-            <Route path="right-manage/right/list" element={<RightList />} />
-            <Route path="/" element={<Navigate replace to="home" />} />
-            <Route path="/*" element={<NoPermission />} /> */}
-          </Routes>
-  )
+    )
 }
+
+const mapStateToProps = ({LoadingReducer:{loadingCount}})=>({
+    loadingCount
+  })
+
+const  NewsRouterCom = connect(mapStateToProps)(NewsRouter)
+export default NewsRouterCom
+

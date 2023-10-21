@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Button, Table, Tag, Modal, Popover, Switch } from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 const { confirm } = Modal
 export default function RightList() {
   const [dataSource, setdataSource] = useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:53000/rights?_embed=children").then((res: any) => {
+    service.get("/rights?_embed=children").then((res: any) => {
       const list = res.data
 
       list.forEach(item => {
@@ -60,11 +60,11 @@ export default function RightList() {
     // console.log(item)
     setdataSource([...dataSource])
     if (item.grade === 1) {
-      axios.patch(`http://localhost:53000/rights/${item.id}`, {
+      service.patch(`/rights/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     } else {
-      axios.patch(`http://localhost:53000/children/${item.id}`, {
+      service.patch(`/children/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     }
@@ -91,12 +91,12 @@ export default function RightList() {
     // 当前页面同步状态 + 后端同步
     if (item.grade === 1) {
       setdataSource(dataSource.filter(data => data.id !== item.id))
-      axios.delete(`http://localhost:53000/rights/${item.id}`)
+      service.delete(`/rights/${item.id}`)
     } else {
       const list = dataSource.filter(data => data.id === item.rightId)
       list[0].children = list[0].children.filter(data => data.id !== item.id)
       setdataSource([...dataSource])
-      axios.delete(`http://localhost:53000/children/${item.id}`)
+      service.delete(`/children/${item.id}`)
     }
   }, [dataSource])
 

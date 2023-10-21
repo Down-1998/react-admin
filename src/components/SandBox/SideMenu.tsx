@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from "react-router";
 // import axios from '@/http/request'
 import axios from 'axios'
 import SubMenu from 'antd/es/menu/SubMenu';
+import { connect } from 'react-redux'
 type MenuItem = Required<MenuProps>['items'][number];
 
 const iconList = {
@@ -21,7 +22,7 @@ const iconList = {
   //.......
 }
 
-export default function SideMenu() {
+ const SideMenu = (props) => {
 
   const location = useLocation();
   // console.log(location, 'location');
@@ -83,9 +84,9 @@ export default function SideMenu() {
 
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Sider trigger={null} collapsible collapsed={props.isCollapsed}>
       <div style={{ display: 'flex', height: '100%', 'flexDirection': 'column' }}>
-        <div className={style['demo-logo-vertical']}>react-admin</div>
+        {!props.isCollapsed && <div className={style['demo-logo-vertical']}>react-admin</div>}
         <div style={{ flex: '1' }}>
           <Menu
             theme="dark"
@@ -102,3 +103,8 @@ export default function SideMenu() {
     </Sider>
   )
 }
+const mapStateToProps = ({CollApsedReducer:{isCollapsed}})=>({
+  isCollapsed
+})
+const SideMenuComp = connect(mapStateToProps)(SideMenu)
+export default SideMenuComp

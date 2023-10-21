@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import {Table,Button,Tag,notification} from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
+import { useNavigate, useLocation } from "react-router";
+
 export default function AuditList(props) {
+    const navigate = useNavigate()
     const [dataSource, setdataSource] = useState([])
     const {username} = JSON.parse(localStorage.getItem("token"))
     useEffect(()=>{
-        axios(`http://localhost:53000/news?author=${username}&auditState_ne=0&publishState_lte=1&_expand=category`).then(res=>{
+        service.get(`/news?author=${username}&auditState_ne=0&publishState_lte=1&_expand=category`).then(res=>{
             console.log(res.data)
             setdataSource(res.data)
         })
@@ -17,7 +20,7 @@ export default function AuditList(props) {
             title: '新闻标题',
             dataIndex: 'title',
             render: (title,item) => {
-                return <a href={`/news-manage/preview/${item.id}`}>{title}</a>
+                return <a onClick={() => navigate(`/news-manage/preview/${item.id}`)}>{title}</a>
             }
         },
         {
@@ -61,7 +64,7 @@ export default function AuditList(props) {
     const handleRervert = (item)=>{
         setdataSource(dataSource.filter(data=>data.id!==item.id))
 
-        axios.patch(`http://localhost:53000/news/${item.id}`,{
+        service.patch(`/news/${item.id}`,{
             auditState:0
         }).then(res=>{
             notification.info({
@@ -79,7 +82,7 @@ export default function AuditList(props) {
     }
 
     const handlePublish = (item)=>{
-        axios.patch(`http://localhost:53000/news/${item.id}`, {
+        service.patch(`/news/${item.id}`, {
             "publishState": 2,
             "publishTime":Date.now()
         }).then(res=>{

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Steps, Button, Form, Input, Select, message, notification } from 'antd'
 import style from './News.module.css'
-import axios from 'axios'
+import service from '@/http/request'
 import NewsEditor from '@/components/newsManage/NewsEditor';
 import { useParams,useNavigate } from "react-router";
 const { Step } = Steps;
@@ -58,15 +58,15 @@ export default function NewsUpdate(props) {
     const NewsForm = useRef(null)
 
     useEffect(() => {
-        axios.get("http://localhost:53000/categories").then(res => {
+        service.get("service/categories").then(res => {
             // console.log(res.data)
             setCategoryList(res.data)
         })
     }, [])
 
     useEffect(() => {
-        axios.get(`http://localhost:53000/news/${params.id}?_expand=category&_expand=role`).then((res) => {
-            const { title, categoryId, content } = res.data
+        service.get(`service/news/${params.id}?_expand=category&_expand=role`).then((res) => {
+            const { title, categoryId, content } = res.data as any
             NewsForm.current.setFieldsValue({
                 title,
                 categoryId
@@ -77,7 +77,7 @@ export default function NewsUpdate(props) {
 
 
     const handleSave = (auditState) => {
-        axios.patch(`http://localhost:53000/news/${params.id}`, {
+        service.patch(`service/news/${params.id}`, {
             ...formInfo,
             "content": content,
             "auditState": auditState,

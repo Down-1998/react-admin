@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import axios from 'axios'
+import service from '@/http/request'
 import {Table,Button,notification} from 'antd'
 
 export default function Audit() {
@@ -11,8 +11,8 @@ export default function Audit() {
             "2":"admin",
             "3":"editor"
         }
-        axios.get(`http://localhost:53000/news?auditState=1&_expand=category`).then(res => {
-            const list = res.data
+        service.get(`http://localhost:53000/news?auditState=1&_expand=category`,{}).then(res => {
+            const list:any = res.data
             setdataSource(roleObj[roleId]==="superadmin"?list:[
                 ...list.filter(item=>item.author===username),
                 ...list.filter(item=>item.region===region&& roleObj[item.roleId]==="editor")
@@ -53,7 +53,7 @@ export default function Audit() {
     const handleAudit = (item,auditState,publishState)=>{
         setdataSource(dataSource.filter(data=>data.id!==item.id))
 
-        axios.patch(`http://localhost:53000/news/${item.id}`,{
+        service.patch(`http://localhost:53000/news/${item.id}`,{
             auditState,
             publishState
         }).then(res=>{

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Descriptions } from 'antd';
 import moment from 'moment'
-import axios from 'axios';
+import service from '@/http/request'
 import { useParams } from "react-router";
 
 export default function NewsPreview(props) {
@@ -9,7 +9,7 @@ export default function NewsPreview(props) {
     const [newsInfo, setnewsInfo] = useState(null)
     useEffect(() => {
         // console.log()
-        axios.get(`http://localhost:53000/news/${params.id}?_expand=category&_expand=role`).then(res => {
+        service.get(`/news/${params.id}?_expand=category&_expand=role`).then(res => {
             setnewsInfo(res.data)
         })
     }, [params.id])

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Button, Table, Modal, Switch } from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import UserForm from '@/components/user-manage/UserForm'
 const { confirm } = Modal
@@ -26,8 +26,8 @@ export default function UserList() {
             "2":"admin",
             "3":"editor"
         }
-        axios.get("http://localhost:53000/users?_expand=role").then(res => {
-            const list = res.data
+        service.get("/users?_expand=role").then(res => {
+            const list = res.data as any
             setdataSource(roleObj[roleId]==="superadmin"?list:[
                 ...list.filter(item=>item.username===username),
                 ...list.filter(item=>item.region===region&& roleObj[item.roleId]==="editor")
@@ -37,14 +37,14 @@ export default function UserList() {
     }, [region,roleId,username])
 
     useEffect(() => {
-        axios.get("http://localhost:53000/regions").then(res => {
+        service.get("/regions").then(res => {
             const list = res.data
             setregionList(list)
         })
     }, [])
 
     useEffect(() => {
-        axios.get("http://localhost:53000/roles").then(res => {
+        service.get("/roles").then(res => {
             const list = res.data
             setroleList(list)
         })
@@ -130,7 +130,7 @@ export default function UserList() {
         item.roleState = !item.roleState
         setdataSource([...dataSource])
 
-        axios.patch(`http://localhost:53000/users/${item.id}`,{
+        service.patch(`/users/${item.id}`,{
             roleState:item.roleState
         })
     }
@@ -157,7 +157,7 @@ export default function UserList() {
 
         setdataSource(dataSource.filter(data=>data.id!==item.id))
 
-        axios.delete(`http://localhost:53000/users/${item.id}`)
+        service.delete(`/users/${item.id}`)
     }
 
     const addFormOK = () => {
@@ -168,7 +168,7 @@ export default function UserList() {
 
             addForm.current.resetFields()
             //post到后端，生成id，再设置 datasource, 方便后面的删除和更新
-            axios.post(`http://localhost:53000/users`, {
+            service.post(`/users`, {
                 ...value,
                 "roleState": true,
                 "default": false,
@@ -201,7 +201,7 @@ export default function UserList() {
             }))
             setisUpdateDisabled(!isUpdateDisabled)
 
-            axios.patch(`http://localhost:53000/users/${current.id}`, value  )
+            service.patch(`/users/${current.id}`, value  )
         })
     }
 

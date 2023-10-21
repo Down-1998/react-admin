@@ -1,5 +1,7 @@
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'antd'
+import store from '@/redux/store'
+
 // 数据返回的接口
 // 定义请求响应参数，不含data
 interface Result {
@@ -23,8 +25,8 @@ const config = {
     baseURL: URL as string,
     // 设置超时时间
     timeout: RequestEnums.TIMEOUT as number,
-    // 跨域时候允许携带凭证
-    withCredentials: true
+    // // 跨域时候允许携带凭证
+    // withCredentials: true
 }
 class RequestHttp {
     // 定义成员变量并指定类型
@@ -40,12 +42,16 @@ class RequestHttp {
         this.service.interceptors.request.use(
             (config: AxiosRequestConfig | any) => {
                 const token = localStorage.getItem('token') || '';
-                return {
-                    ...config,
-                    headers: {
-                        'x-access-token': token, // 请求头中携带token信息
-                    }
-                }
+                store.dispatch({
+                  type:"add_loading",
+                })
+                // return {
+                //     ...config,
+                //     headers: {
+                //         'x-access-token': token, // 请求头中携带token信息
+                //     }
+                // }
+                return config;
             },
             (error: AxiosError) => {
                 // 请求报错
@@ -59,7 +65,10 @@ class RequestHttp {
          */
         this.service.interceptors.response.use(
             (response: AxiosResponse) => {
-                const { data, config } = response; // 解构
+              store.dispatch({
+                type:"delete_loading",
+              })
+                // const { data, config } = response; // 解构
                 // if (data.code === RequestEnums.OVERDUE) {
                 //     // 登录信息失效，应跳转到登录页面，并清空本地的token
                 //     localStorage.setItem('token', '');
@@ -70,9 +79,13 @@ class RequestHttp {
                 //   message.error(data); // 此处也可以使用组件提示报错信息
                 //     return Promise.reject(data)
                 // }
-                return data;
+                return response;
             },
             (error: AxiosError) => {
+              store.dispatch({
+                type:"delete_loading",
+                payload:1
+              })
                 const { response } = error;
                 if (response) {
                     this.handleCode(response.status)

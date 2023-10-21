@@ -1,20 +1,18 @@
 import React, { useState, useEffect,useRef,useContext } from 'react'
 import { Button, Table, Modal,Form,Input } from 'antd'
-import axios from 'axios'
+import service from '@/http/request'
 import { DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 const { confirm } = Modal
 export default function NewsCategory() {
     const [dataSource, setdataSource] = useState([])
 
     useEffect(() => {
-        axios.get("http://localhost:53000/categories").then(res => {
+        service.get("/categories").then(res => {
             setdataSource(res.data)
         })
     }, [])
 
     const handleSave = (record)=>{
-        // console.log(record)
-
         setdataSource(dataSource.map(item=>{
             if(item.id===record.id){
                 return {
@@ -26,7 +24,7 @@ export default function NewsCategory() {
             return item
         }))
 
-        axios.patch(`http://localhost:53000/categories/${record.id}`,{
+        service.patch(`/categories/${record.id}`,{
             title:record.title,
             value:record.title
         })
@@ -83,7 +81,7 @@ export default function NewsCategory() {
         // console.log(item)
         // 当前页面同步状态 + 后端同步
         setdataSource(dataSource.filter(data => data.id !== item.id))
-        axios.delete(`/categories/${item.id}`)
+        service.delete(`/categories/${item.id}`)
     }
 
     const EditableContext = React.createContext(null);
