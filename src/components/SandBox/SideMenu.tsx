@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import {
-  UserOutlined, HomeOutlined, CrownOutlined
+  UserOutlined, HomeOutlined, AuditOutlined, CrownOutlined, SearchOutlined, RocketOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, MenuProps } from 'antd';
 const { Sider } = Layout;
@@ -15,10 +15,10 @@ type MenuItem = Required<MenuProps>['items'][number];
 const iconList = {
   "/home": <HomeOutlined />,
   "/user-manage": <UserOutlined />,
-  "/user-manage/list": <CrownOutlined />,
-  "/right-manage": <UserOutlined />,
-  "/right-manage/role/list": <UserOutlined />,
-  "/right-manage/right/list": <UserOutlined /> 
+  "/right-manage": <AuditOutlined />,
+  "/news-manage": <CrownOutlined /> ,
+  "/audit-manage": <SearchOutlined /> ,
+  "/publish-manage": <RocketOutlined /> ,
   //.......
 }
 
