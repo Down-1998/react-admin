@@ -26,7 +26,7 @@ function usePublish(type:number){
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到【发布管理/已经发布】中查看您的新闻`,
+                  `您可以到【发布管理/已经发布】中查看您的活动`,
                 placement:"bottomRight"
             });
         })
@@ -41,7 +41,7 @@ function usePublish(type:number){
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到【发布管理/已下线】中查看您的新闻`,
+                  `您可以到【发布管理/已下线】中查看您的活动`,
                 placement:"bottomRight"
             });
         })
@@ -54,7 +54,7 @@ function usePublish(type:number){
             notification.info({
                 message: `通知`,
                 description:
-                  `您已经删除了已下线的新闻`,
+                  `您已经删除了已下线的活动`,
                 placement:"bottomRight"
             });
         })

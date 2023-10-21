@@ -232,14 +232,14 @@
     },
     {
       "id": 15,
-      "title": "新闻列表",
+      "title": "活动列表",
       "rightId": 14,
       "key": "/news-manage/list",
       "grade": 2
     },
     {
       "id": 16,
-      "title": "撰写新闻",
+      "title": "撰写活动",
       "rightId": 14,
       "key": "/news-manage/add",
       "grade": 2,
@@ -247,7 +247,7 @@
     },
     {
       "id": 17,
-      "title": "新闻更新",
+      "title": "活动更新",
       "rightId": 14,
       "key": "/news-manage/update/:id",
       "grade": 2,
@@ -255,7 +255,7 @@
     },
     {
       "id": 18,
-      "title": "新闻预览",
+      "title": "活动预览",
       "rightId": 14,
       "key": "/news-manage/preview/:id",
       "grade": 2,
@@ -271,7 +271,7 @@
     },
     {
       "id": 20,
-      "title": "新闻分类",
+      "title": "活动分类",
       "rightId": 14,
       "key": "/news-manage/category",
       "pagepermisson": 1,
@@ -279,7 +279,7 @@
     },
     {
       "id": 22,
-      "title": "审核新闻",
+      "title": "审核活动",
       "rightId": 21,
       "key": "/audit-manage/audit",
       "pagepermisson": 1,
@@ -345,7 +345,7 @@
     },
     {
       "id": 14,
-      "title": "新闻管理",
+      "title": "活动管理",
       "key": "/news-manage",
       "pagepermisson": 1,
       "grade": 1
@@ -368,8 +368,8 @@
   "categories": [
     {
       "id": 1,
-      "title": "时事新闻",
-      "value": "时事新闻"
+      "title": "时事活动",
+      "value": "时事活动"
     },
     {
       "id": 2,

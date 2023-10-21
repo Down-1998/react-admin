@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from 'react'
-import service from '@/http/request'
 import {Table,Button,notification} from 'antd'
+import service from '@/http/request'
+import { useNavigate, useLocation } from "react-router";
 
 export default function Audit() {
+    const navigate = useNavigate();
     const [dataSource, setdataSource] = useState([])
     const {roleId,region,username}  = JSON.parse(localStorage.getItem("token"))
     useEffect(()=>{
@@ -22,10 +24,10 @@ export default function Audit() {
 
     const columns = [
         {
-            title: '新闻标题',
+            title: '活动标题',
             dataIndex: 'title',
             render: (title,item) => {
-                return <a href={`#/news-manage/preview/${item.id}`}>{title}</a>
+                return <a onClick={() => navigate(`/news-manage/preview/${item.id}`)}>{title}</a>
             }
         },
         {
@@ -33,7 +35,7 @@ export default function Audit() {
             dataIndex: 'author'
         },
         {
-            title: "新闻分类",
+            title: "活动分类",
             dataIndex: 'category',
             render: (category) => {
                 return <div>{category.title}</div>
@@ -60,7 +62,7 @@ export default function Audit() {
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到[审核管理/审核列表]中查看您的新闻的审核状态`,
+                  `您可以到[审核管理/审核列表]中查看您的活动的审核状态`,
                 placement:"bottomRight"
             });
         })

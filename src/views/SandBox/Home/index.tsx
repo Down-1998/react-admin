@@ -50,7 +50,7 @@ export default function Home() {
         // 指定图表的配置项和数据
         const option = {
             title: {
-                text: '新闻分类图示'
+                text: '活动分类图示'
             },
             tooltip: {},
             legend: {
@@ -106,7 +106,7 @@ export default function Home() {
 
         const option = {
             title: {
-                text: '当前用户新闻分类图示',
+                text: '当前用户活动分类图示',
                 // subtext: '纯属虚构',
                 left: 'center'
             },
@@ -207,7 +207,7 @@ export default function Home() {
             </Row>
             <Drawer
                 width="500px"
-                title="个人新闻分类"
+                title="个人活动分类"
                 placement="right"
                 closable={true}
                 onClose={() => {

@@ -29,7 +29,7 @@ const LocalRouterMap = {
     "/news-manage/category": NewsCategory,//分类
     "/news-manage/preview/:id": NewsPreview,
     "/news-manage/update/:id": NewsUpdate,
-    "/audit-manage/audit": Audit,//审核新闻
+    "/audit-manage/audit": Audit,//审核活动
     "/audit-manage/list": AuditList,//审核列表
     "/publish-manage/unpublished": Unpublished,//待发布
     "/publish-manage/published": Published,//已发布

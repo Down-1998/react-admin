@@ -42,7 +42,7 @@ const iconList = {
   }, [])
   useEffect(() => {
     setCurrent(location.pathname);
-  }, [location])
+  }, [location.pathname])
 
   const {rights} = JSON.parse(localStorage.getItem("tokenRole"))
   const checkPagePermission = useCallback((item)=>{

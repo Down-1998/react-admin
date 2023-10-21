@@ -1,14 +1,15 @@
 import React from 'react'
 import { Table} from 'antd'
+import { useNavigate, useLocation } from "react-router";
 
 export default function NewsPublish(props) {
-
+    const navigate = useNavigate()
     const columns = [
         {
-            title: '新闻标题',
+            title: '活动标题',
             dataIndex: 'title',
             render: (title,item) => {
-                return <a href={`#/news-manage/preview/${item.id}`}>{title}</a>
+                return <a onClick={() => navigate(`/news-manage/preview/${item.id}`)}>{title}</a>
             }
         },
         {
@@ -16,7 +17,7 @@ export default function NewsPublish(props) {
             dataIndex: 'author'
         },
         {
-            title: "新闻分类",
+            title: "活动分类",
             dataIndex: 'category',
             render: (category) => {
                 return <div>{category.title}</div>

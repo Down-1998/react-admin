@@ -17,7 +17,7 @@ export default function AuditList(props) {
 
     const columns = [
         {
-            title: '新闻标题',
+            title: '活动标题',
             dataIndex: 'title',
             render: (title,item) => {
                 return <a onClick={() => navigate(`/news-manage/preview/${item.id}`)}>{title}</a>
@@ -28,7 +28,7 @@ export default function AuditList(props) {
             dataIndex: 'author'
         },
         {
-            title: "新闻分类",
+            title: "活动分类",
             dataIndex: 'category',
             render: (category) => {
                 return <div>{category.title}</div>
@@ -70,7 +70,7 @@ export default function AuditList(props) {
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到草稿箱中查看您的新闻`,
+                  `您可以到草稿箱中查看您的活动`,
                 placement:"bottomRight"
             });
   
@@ -78,7 +78,8 @@ export default function AuditList(props) {
     }
 
     const handleUpdate = (item)=>{
-        props.history.push(`/news-manage/update/${item.id}`)
+        // props.history.push(`/news-manage/update/${item.id}`)
+        navigate(`/news-manage/update/${item.id}`)
     }
 
     const handlePublish = (item)=>{
@@ -86,12 +87,13 @@ export default function AuditList(props) {
             "publishState": 2,
             "publishTime":Date.now()
         }).then(res=>{
-            props.history.push('/publish-manage/published')
+            // props.history.push('/publish-manage/published')
+            navigate('/publish-manage/published')
 
             notification.info({
                 message: `通知`,
                 description:
-                  `您可以到【发布管理/已经发布】中查看您的新闻`,
+                  `您可以到【发布管理/已经发布】中查看您的活动`,
                 placement:"bottomRight"
             });
         })

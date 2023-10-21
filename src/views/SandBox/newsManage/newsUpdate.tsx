@@ -18,14 +18,14 @@ export default function NewsUpdate(props) {
     const itemArr = [
         {
             title: '基本信息',
-            description:'新闻标题，新闻分类',
+            description:'活动标题，活动分类',
         },
         {
-            title: '新闻内容',
-            description:'新闻主体内容',
+            title: '活动内容',
+            description:'活动主体内容',
         },
         {
-            title: '新闻提交',
+            title: '活动提交',
             description:'保存草稿或者提交审核',
         }
     ]
@@ -40,7 +40,7 @@ export default function NewsUpdate(props) {
             })
         } else {
             if (content === "" || content.trim() === "<p></p>") {
-                message.error("新闻内容不能为空")
+                message.error("活动内容不能为空")
             } else {
                 setCurrent(current + 1)
             }
@@ -87,7 +87,7 @@ export default function NewsUpdate(props) {
             notification.info({
                 message: `通知`,
                 description:
-                    `您可以到${auditState === 0 ? '草稿箱' : '审核列表'}中查看您的新闻`,
+                    `您可以到${auditState === 0 ? '草稿箱' : '审核列表'}中查看您的活动`,
                 placement: "bottomRight"
             });
         })
@@ -97,7 +97,7 @@ export default function NewsUpdate(props) {
         <div>
             {/* <PageHeader
                 className="site-page-header"
-                title="更新新闻"
+                title="更新活动"
                 onBack={()=>props.history.goBack()}
                 subTitle="This is a subtitle"
             /> */}
@@ -114,7 +114,7 @@ export default function NewsUpdate(props) {
                         ref={NewsForm}
                     >
                         <Form.Item
-                            label="新闻标题"
+                            label="活动标题"
                             name="title"
                             rules={[{ required: true, message: 'Please input your username!' }]}
                         >
@@ -122,7 +122,7 @@ export default function NewsUpdate(props) {
                         </Form.Item>
 
                         <Form.Item
-                            label="新闻分类"
+                            label="活动分类"
                             name="categoryId"
                             rules={[{ required: true, message: 'Please input your username!' }]}
                         >

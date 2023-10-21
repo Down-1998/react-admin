@@ -36,7 +36,7 @@ export default function Login() {
     return (
         <div className="login-container">
             <div id='login_box'>
-                <div className="logintitle">全球新闻发布管理系统</div>
+                <div className="logintitle">全球活动发布管理系统</div>
                 <Form
                     name="normal_login"
                     className="login-form"
