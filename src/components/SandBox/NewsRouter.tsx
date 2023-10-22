@@ -75,7 +75,7 @@ const NewsRouter = (props) => {
                 <Route path="/" element={<Navigate replace to="home" />} />
                 {/* <Route path="*" element={<NoPermission />} /> */}
                 {
-                    BackRouteList.length > 0 && <Route path="*" element={<NoPermission />} />
+                    BackRouteList.length > 0 && <Route path="/*" element={<NoPermission />} />
                 }
                 {/* <Route path="home" element={<Home />} />
                 <Route path="user-manage/list" element={<UserList />} />
