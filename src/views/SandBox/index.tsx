@@ -11,7 +11,7 @@ const { Content } = Layout;
 export default function NewsSandBox() {
   NProgress.start()
   useEffect(() => {
-    NProgress.done()
+    NProgress.done()   
   }, [])
   const {
     token: { colorBgContainer },
